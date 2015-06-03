@@ -1,0 +1,82 @@
+html{
+	box-sizing: border-box;
+}
+
+*, *:before, *:after{
+	box-sizing:inherit;
+}
+
+.container{
+	margin: 0 auto;
+	max-width: 1200px;
+}
+
+
+.row:after{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.column{
+	float: left;
+	padding-left: 10px;
+	padding-right: 10px;
+	width: 100%;
+}
+
+.column > .row{
+	margin-left: -10px;
+	margin-right: -10px;
+}
+
+.column.one-eighth{
+	width: 12.5%;
+}
+
+.column.three-eighth{
+	width: 37.5%;
+}
+
+.column.one-sixth{
+	width: 16.66666666666666%;
+}
+
+.column.one-fifth{
+	width: 20%;
+}
+
+.column.one-fourth{
+	width: 25%;
+}
+
+.column.one-third{
+	width: 33.333333333%;
+}
+
+.column.two-third{
+	width: 66.6666666666%;
+}
+
+.column.one-half,
+.column.two-fourth,
+.column.three-sixth{
+	width: 50%;
+}
+
+/* these following classes will offset columns to the right*/
+.offset-one-fourth{
+	margin-left: 25%;
+}
+
+.offset-one-half{
+	margin-left: 50%;
+}
+
+.offset-one-third{
+	margin-left: 33.333333333%;
+}
+
+.offset-two-third{
+	margin-left: 66.666666666%;
+}
