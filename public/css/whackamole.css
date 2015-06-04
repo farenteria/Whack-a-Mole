@@ -1,0 +1,11 @@
+.column{
+}
+
+.box{
+	border: 1px solid black;
+	height: 100px;
+}
+
+body{
+	background-color: black;
+}
