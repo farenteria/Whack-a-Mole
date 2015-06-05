@@ -4,10 +4,34 @@
 	<title>Whack it</title>
 	<link rel="stylesheet" href="/css/normalize.css">
 	<link rel="stylesheet" href="/css/grid.css">
-	<link rel="stylesheet" href="/css/whackamole.dev">
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="/css/whackamole.css">
 </head>
 <body>
+	<div class="container">
+		<h1 class="row">Smash the Box</h1>
+		<p class="row">Round <span id="round">1</span></p>
+		<p class="row">Score: <span id="score">0</span></p>
+		<p class="row">Lives Left: <span>5</span></p>
+
+		<div class="row">
+			<div class="column one-third box"></div>
+			<div class="column one-third box"></div>
+			<div class="column one-third box"></div>
+		</div>
+			<div class="row">
+			<div class="column one-third box"></div>
+			<div class="column one-third box"></div>
+			<div class="column one-third box"></div>
+		</div>
+			<div class="row">
+			<div class="column one-third box"></div>
+			<div class="column one-third box"></div>
+			<div class="column one-third box"></div>
+		</div>
+	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 	<script src="/js/whackamole.js"></script>
 </body>
 </html>
