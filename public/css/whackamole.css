@@ -1,3 +1,7 @@
+body{
+	text-align: center;
+}
+
 .container{
 	max-width: 800px;
 }
@@ -7,6 +11,13 @@
 	height: 100px;
 }
 
-body{
-	text-align: center;
+#gameboard{
+	opacity: 0.4;
+}
+
+#start-button{
+	position: absolute;
+	top: 320px;
+	left: 575px;
+	border-radius: 25px;
 }
