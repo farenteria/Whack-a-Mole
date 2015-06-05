@@ -43,6 +43,7 @@
 		startGame();
 	}
 
+	//Whenever user clicks hole, check if mole is in it, and check if user still has lives
 	function onHoleClick(event){
 		if($(this).hasClass("mole")){
 			score++;
@@ -53,13 +54,20 @@
 		}
 
 		if (lives < 0){
-			alert("Game Over");
+			endGame();
 		}
 	}
 
+	//starts mole animations, and adds listeners to each hole
 	function startGame(){
 		setHoleAnimation();
 		$(holes).on("click", onHoleClick);
+	}
+
+	//stops mole animation, announces that user is terrible
+	function endGame(){
+		alert("Game Over");
+		clearInterval(intervalId);
 	}
 
 	initialize();
