@@ -12,8 +12,8 @@
 		round = 1;
 		score = 0;
 		lives = 5;
-		holes = $(".hole");
 		setHoleAnimation();
+		holes = $(".hole");
 
 		$("#start-button").on("click", onButtonClick);
 	}
@@ -48,6 +48,10 @@
 		if($(this).hasClass("mole")){
 			score++;
 			$("#score").text(score);
+
+			if(score % 10 == 0){
+				addRound();
+			}
 		} else{
 			lives--;
 			$("#lives").text(lives);
@@ -56,6 +60,14 @@
 		if (lives < 0){
 			endGame();
 		}
+	}
+
+	//Add a new row each round
+	function addRound(){
+		var hole = "<div class='column one-third hole'></div>"; //this is what each hole consists of
+		$("#gameboard").append("<div class='row'>" + hole + hole + hole + "</div>");
+		holes = $(".hole");
+		$(holes).on("click", onHoleClick);
 	}
 
 	//starts mole animations, and adds listeners to each hole
