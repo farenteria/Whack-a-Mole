@@ -40,6 +40,7 @@
 
 		intervalId = setInterval(function(){
 			random = Math.floor(Math.random() * keysAllowed.length);
+			currentLetter = keysAllowed[random];
 
 			$(".letter-shown").show();
 			$(".letter-shown").text(random);
@@ -105,8 +106,15 @@
 		$(holes).off();
 	}
 
+	//detects if keypress is equal to current key shown on screen
 	function onKeyPresses(event){
-		console.log(event.which);
+		if(($.inArray(event.which, keysAllowed)) >= 0 && event.which == currentLetter){
+			score++;
+			$("#score").text(score);
+		} else{
+			lives--;
+			$("#lives").text(lives);
+		}
 	}
 
 	function showNextLetter(){
