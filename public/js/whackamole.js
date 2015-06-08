@@ -27,8 +27,7 @@
 			keysAllowed.push(i);
 		}
 
-		setHoleAnimation();
-		holes = $(".hole");
+	//	setHoleAnimation();
 
 		$("#start-button").on("click", onButtonClick);
 	}
@@ -70,10 +69,6 @@
 			lives--;
 			$("#lives").text(lives);
 		}
-
-		if (lives < 0){
-			endGame();
-		}
 	}
 
 	//Add a new row each round
@@ -84,10 +79,11 @@
 
 	//starts mole animations, and adds listeners to each hole
 	function startGame(){
-		$(holes).on("click", onHoleClick);
+		$("body").on("keydown", onKeyPresses);
 		$("#round").text(round);
 		$("#score").text(score);
 		$("#lives").text(lives);
+		setHoleAnimation();
 		addRound();
 	}
 
@@ -103,7 +99,7 @@
 		alert("Game Over");
 		clearInterval(intervalId);
 		bringBackButton();
-		$(holes).off();
+		$("body").off();
 	}
 
 	//detects if keypress is equal to current key shown on screen
@@ -115,13 +111,15 @@
 			lives--;
 			$("#lives").text(lives);
 		}
+
+		if (lives < 0){
+			endGame();
+		}
 	}
 
 	function showNextLetter(){
 
 	}
-
-	$("body").on("keydown", onKeyPresses);
 
 	initialize();
 })();
