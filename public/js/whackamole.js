@@ -7,6 +7,7 @@
 	var lives;
 	var columns;
 	var intervalId;
+	var startButton;
 
 	//initializes variables, button, and beginning animations whenpage is loaded
 	function initialize(){
@@ -36,9 +37,9 @@
 		}, interval);
 	}
 
-	//when start button is clicked, remove button, stop highlighting, and make gameboard opaque
+	//when start button is clicked, remove button, and make gameboard opaque
 	function onButtonClick(){
-		$("#start-button").remove();
+		startButton = $("#start-button").detach();
 		$("#gameboard").css("opacity", "1.0");
 
 		startGame();
@@ -65,47 +66,32 @@
 
 	//Add a new row each round
 	function addRound(){
-		// var hole = "<div class='column one-third hole'></div>"; //this is what each hole consists of
-
-		// $("#gameboard").append("<div class='row'>" + hole + hole + hole + "</div>");
-		// holes = $(".hole");
-		// $(holes).on("click", onHoleClick);
-
-		var hole = "<div class='column one-third hole'></div>";
-		var newRow = "";
-
-		columns++;
-		console.log(columns);
-
-		for(var i = 1; i < columns; i++){
-			newRow += hole;
-		}
-
-		if(columns > 1){
-			$("#gameboard").append("<div class='row'>" + newRow + "</div>");
-			console.log("<div class='row'>" + newRow + "</div>");
-
-			for(var i = 1; i < columns; i++){
-			$(" #gameboard .row").append(hole);
-		}
-		}
-
 		round++;
-
-		holes = $(".hole");
-		$(holes).on("click", onHoleClick);
+		$("#round").text(round);
 	}
 
 	//starts mole animations, and adds listeners to each hole
 	function startGame(){
 		$(holes).on("click", onHoleClick);
+		$("#round").text(round);
+		$("#score").text(score);
+		$("#lives").text(lives);
 		addRound();
+	}
+
+	//places start button back in position
+	function bringBackButton(){
+		initialize();
+		$("#gameboard").css("opacity", "0.3");
+		$(startButton).appendTo(".container");
 	}
 
 	//stops mole animation, announces that user is terrible
 	function endGame(){
 		alert("Game Over");
 		clearInterval(intervalId);
+		bringBackButton();
+		$(holes).off();
 	}
 
 	initialize();
