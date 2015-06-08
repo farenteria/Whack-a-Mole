@@ -9,6 +9,9 @@
 	var keyPresses;
 	var currentLetter;
 	var keysAllowed;
+	var gameTitle;
+	var interval;
+	var changedRound;
 
 	//initializes variables, button, and beginning animations whenpage is loaded
 	function initialize(){
@@ -17,6 +20,7 @@
 		round = 0;
 		score = 0;
 		lives = 5;
+		changedRound = false;
 		keysAllowed = [];
 
 		//the numbers that user may press (0-9) in char code
@@ -29,7 +33,7 @@
 	}
 	//before game begins, highlight random holes in gameboard
 	function setKeyAnimation(){
-		var interval = 1500;
+		interval = 1500;
 		var effect = "puff";
 		var random;
 
@@ -43,6 +47,12 @@
 			$(".letter-shown").text(random);
 
 			$(".letter-shown").effect(effect);
+
+			if(score % 10 == 0 && score != 0 && !changedRound){
+				addRound();
+			}
+
+			console.log(interval);
 		}, interval);
 	}
 
@@ -62,14 +72,18 @@
 	//when start button is clicked, remove button, and make gameboard opaque
 	function onButtonClick(){
 		startButton = $("#start-button").detach();
+		gameTitle = $("#title").detach();
 
 		startGame();
 	}
 
-	//Add a new row each round
+	//Add a new row each round, make interval have less time
 	function addRound(){
 		round++;
 		$("#round").text(round);
+		changedRound = true;
+
+		interval -= 100;
 	}
 
 	//starts key animtations, resets html text, and adds listeners to each hole
@@ -85,13 +99,15 @@
 
 	//places start button back in position
 	function bringBackButton(){
-		initialize();
 		$(startButton).appendTo(".container");
+		$(gameTitle).appendTo("#game-area");
+		initialize();
 	}
 
-	//stops mole animation, announces that user is terrible
+	//stops key animations, announces that user is terrible
 	function endGame(){
 		alert("Game Over");
+		// $("#title").text("Game Over");
 		clearInterval(intervalId);
 		bringBackButton();
 		$("body").off();
@@ -99,9 +115,10 @@
 
 	//detects if keypress is equal to current key shown on screen, and ends game when lives run out
 	function onKeyPresses(event){
-		if(($.inArray(event.which, keysAllowed)) >= 0 && event.which == currentLetter){
+		if(event.which == currentLetter){
 			score++;
 			$("#score").text(score);
+			changedRound = false;
 		} else{
 			lives--;
 			$("#lives").text(lives);
@@ -110,8 +127,10 @@
 		if (lives < 0){
 			endGame();
 		}
+
 	}
 
+	//animates each letter after the previous one for our game title
 	function animateHeading(){
 		//save our text so we can clear it and append to blank element
 		var text = $("#title").text();
@@ -123,7 +142,7 @@
 
 		$(".animate").each(function() {
 	        var that = $(this);
-	        
+
 	        setTimeout(function() { 
 	        	that.animate({ fontSize: "90px" }, 1500 )
 	                .animate({ fontSize: "50px" }, 1500 );
