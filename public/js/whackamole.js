@@ -3,9 +3,7 @@
 	var round;
 	var score;
 	var holes;
-	var random;
 	var lives;
-	var columns;
 	var intervalId;
 	var startButton;
 	var keyPresses;
@@ -15,19 +13,16 @@
 	//initializes variables, button, and beginning animations whenpage is loaded
 	function initialize(){
 		var startingPoint = 48; //char code for '0'. Begin pushing to keysAllowed array from there
-		var totalKeys = 10;
+		var totalKeys = 10; //currently only has the set of numbers from 0-9 to choose from
 		round = 0;
 		score = 0;
 		lives = 5;
-		columns = 0;
 		keysAllowed = [];
 
 		//the numbers that user may press (0-9) in char code
 		for(var i = startingPoint; i < startingPoint + totalKeys; i++){
 			keysAllowed.push(i);
 		}
-
-	//	setHoleAnimation();
 
 		$("#start-button").on("click", onButtonClick);
 	}
@@ -36,10 +31,13 @@
 	function setHoleAnimation(){
 		var interval = 1500;
 		var effect = "puff";
+		var random;
 
 		intervalId = setInterval(function(){
 			random = Math.floor(Math.random() * keysAllowed.length);
 			currentLetter = keysAllowed[random];
+
+			setRandomPosition();
 
 			$(".letter-shown").show();
 			$(".letter-shown").text(random);
@@ -48,27 +46,25 @@
 		}, interval);
 	}
 
+	//sets letter in a random position
+	function setRandomPosition(){
+		var random;
+		var gameBoxHeight = $("#game-area").height();
+		var gameBoxWidth = $("#game-area").width();
+
+		random = Math.floor(Math.random() * gameBoxWidth);
+		$(".letter-shown").css("left", random);
+
+		random = Math.floor(Math.random() * gameBoxHeight);
+		$(".letter-shown").css("top", random);
+	}
+
 	//when start button is clicked, remove button, and make gameboard opaque
 	function onButtonClick(){
 		startButton = $("#start-button").detach();
 		$("#gameboard").css("opacity", "1.0");
 
 		startGame();
-	}
-
-	//Whenever user clicks hole, check if mole is in it, and check if user still has lives
-	function onHoleClick(event){
-		if($(this).hasClass("mole")){
-			score++;
-			$("#score").text(score);
-
-			if(score % 10 == 0){
-				addRound();
-			}
-		} else{
-			lives--;
-			$("#lives").text(lives);
-		}
 	}
 
 	//Add a new row each round
@@ -83,6 +79,7 @@
 		$("#round").text(round);
 		$("#score").text(score);
 		$("#lives").text(lives);
+
 		setHoleAnimation();
 		addRound();
 	}
@@ -102,7 +99,7 @@
 		$("body").off();
 	}
 
-	//detects if keypress is equal to current key shown on screen
+	//detects if keypress is equal to current key shown on screen, and ends game when lives run out
 	function onKeyPresses(event){
 		if(($.inArray(event.which, keysAllowed)) >= 0 && event.which == currentLetter){
 			score++;

@@ -6,13 +6,8 @@ body{
 	max-width: 800px;
 }
 
-.hole{
-	border: 1px solid #e0e0e0;
-	height: 100px;
-}
-
-#gameboard{
-	opacity: 0.4;
+.letter-shown{
+	position: absolute;
 }
 
 #start-button{
@@ -20,4 +15,10 @@ body{
 	top: 320px;
 	left: 575px;
 	border-radius: 25px;
+}
+
+#game-area{
+	height: 400px;
+	border: 1px solid #e0e0e0;
+	position: relative;
 }
