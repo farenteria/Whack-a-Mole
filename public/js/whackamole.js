@@ -8,13 +8,25 @@
 	var columns;
 	var intervalId;
 	var startButton;
+	var keyPresses;
+	var currentLetter;
+	var keysAllowed;
 
 	//initializes variables, button, and beginning animations whenpage is loaded
 	function initialize(){
+		var startingPoint = 48; //char code for '0'. Begin pushing to keysAllowed array from there
+		var totalKeys = 10;
 		round = 0;
 		score = 0;
 		lives = 5;
 		columns = 0;
+		keysAllowed = [];
+
+		//the numbers that user may press (0-9) in char code
+		for(var i = startingPoint; i < startingPoint + totalKeys; i++){
+			keysAllowed.push(i);
+		}
+
 		setHoleAnimation();
 		holes = $(".hole");
 
@@ -23,17 +35,16 @@
 
 	//before game begins, highlight random holes in gameboard
 	function setHoleAnimation(){
-		var interval = 1000;
-		var mole;
+		var interval = 1500;
+		var effect = "puff";
 
 		intervalId = setInterval(function(){
-			//before getting a new random hole, make sure the other one doesn't have a mole anymore
-			$(holes[random]).toggleClass("mole");
+			random = Math.floor(Math.random() * keysAllowed.length);
 
-			random = Math.floor(Math.random() * holes.length);
+			$(".letter-shown").show();
+			$(".letter-shown").text(random);
 
-			$(holes[random]).effect("highlight", {color:"#558ABB"});
-			$(holes[random]).toggleClass("mole");
+			$(".letter-shown").effect(effect);
 		}, interval);
 	}
 
@@ -93,6 +104,16 @@
 		bringBackButton();
 		$(holes).off();
 	}
+
+	function onKeyPresses(event){
+		console.log(event.which);
+	}
+
+	function showNextLetter(){
+
+	}
+
+	$("body").on("keydown", onKeyPresses);
 
 	initialize();
 })();
