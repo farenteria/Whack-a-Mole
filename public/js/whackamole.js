@@ -25,10 +25,10 @@
 		}
 
 		$("#start-button").on("click", onButtonClick);
+		animateHeading();
 	}
-
 	//before game begins, highlight random holes in gameboard
-	function setHoleAnimation(){
+	function setKeyAnimation(){
 		var interval = 1500;
 		var effect = "puff";
 		var random;
@@ -62,7 +62,6 @@
 	//when start button is clicked, remove button, and make gameboard opaque
 	function onButtonClick(){
 		startButton = $("#start-button").detach();
-		$("#gameboard").css("opacity", "1.0");
 
 		startGame();
 	}
@@ -73,21 +72,20 @@
 		$("#round").text(round);
 	}
 
-	//starts mole animations, and adds listeners to each hole
+	//starts key animtations, resets html text, and adds listeners to each hole
 	function startGame(){
 		$("body").on("keydown", onKeyPresses);
 		$("#round").text(round);
 		$("#score").text(score);
 		$("#lives").text(lives);
 
-		setHoleAnimation();
+		setKeyAnimation();
 		addRound();
 	}
 
 	//places start button back in position
 	function bringBackButton(){
 		initialize();
-		$("#gameboard").css("opacity", "0.3");
 		$(startButton).appendTo(".container");
 	}
 
@@ -114,8 +112,23 @@
 		}
 	}
 
-	function showNextLetter(){
+	function animateHeading(){
+		//save our text so we can clear it and append to blank element
+		var text = $("#title").text();
+		$("#title").html("");
 
+		for(var i = 0; i < text.length; i++) {
+ 			 $("#title").append("<span class='animate'>" + text[i] + "</span>");
+		}
+
+		$(".animate").each(function() {
+	        var that = $(this);
+	        
+	        setTimeout(function() { 
+	        	that.animate({ fontSize: "90px" }, 1500 )
+	                .animate({ fontSize: "50px" }, 1500 );
+	        }, $(this).index() * 100);
+  	  	});
 	}
 
 	initialize();
