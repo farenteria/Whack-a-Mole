@@ -110,10 +110,7 @@
 				addRound();
 			}
 		} else{
-			lives--;
-
-			//displays new, current lives. Refer to visuals.js
-			updateLives(lives);
+			subtractLife();
 		}
 
 		if (lives < 0){
@@ -152,8 +149,7 @@
 
 				//if user hasn't pressed a key, that's going to cost a life
 				if(!pressed){
-					lives--;
-					updateLives(lives);
+					subtractLife();
 
 					if(lives < 0){
 						endGame();
@@ -181,7 +177,6 @@
 					keysAllowed = keysAllowed.concat(fourthSet);
 					break;
 			}
-
 		}
 	}
 
@@ -206,6 +201,14 @@
 			//will show the key in position. Refer to visuals.js
 			setPosition(random, moveFrom);
 		}
+	}
+
+	//subtracts a life from player, and displays it on screen.
+	function subtractLife(){
+		lives--;
+
+		//displays on screen. Refer to visuals.js
+		updateLives(lives);
 	}
 
 	//stops key animations, announces that user is terrible

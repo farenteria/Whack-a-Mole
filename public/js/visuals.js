@@ -8,9 +8,9 @@ function updateScore(score){
 	$("#score").text("Score: " + score);
 }
 
-//displays new amount of lives on page
+//displays new amount of lives on page after animating
 function updateLives(lives){
-	$("#lives").text("Lives: " + lives);
+	animateParagraph("#d30a0a", "lives", lives);
 }
 
 //displays new high score on page
@@ -20,13 +20,7 @@ function updateHighScore(highScore){
 
 //new round element will be animated to give a visual cue that it's going to get harder
 function updateRound(round){
-	$("#round").text("Round: " + round).animate({
-		color: "##EDC53F",
-		fontSize: "20px"
-	}, 500).animate({
-		color: "#776E65",
-		fontSize: "16px"
-	}, 500);
+	animateParagraph("#EDC53F", "round", round);
 }
 
 //Updates new current key that must be pressed
@@ -57,6 +51,21 @@ function animateHeading(phrase){
 	            .animate({ fontSize: "50px" }, 1500 );
 	    }, $(this).index() * 100);
   	});
+}
+
+//Animates a paragraph
+function animateParagraph(color, element, value){
+	$("#" + element).text(capitalize(element) + ": " +  value).animate({
+		color: "#" + color,
+		fontSize: "20px"
+	}, 500).animate({
+		color: "#776E65",
+		fontSize: "16px"
+	}, 500);
+
+	function capitalize(word){
+		return word.charAt(0).toUpperCase() + word.slice(1, word.length);
+	}	
 }
 
 //Gets saved button and title from references and displays them on page
