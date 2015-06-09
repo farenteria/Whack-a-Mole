@@ -2,11 +2,9 @@
 (function(){
 	var round;
 	var score;
-	var holes;
 	var lives;
 	var intervalId;
 	var startButton;
-	var keyPresses;
 	var currentKey;
 	var keysAllowed;
 	var gameTitle;
@@ -16,7 +14,7 @@
 	//Will only run when page is first loaded
 	function onFirstRun(){
 		initialize();
-		animateHeading("Hit the Letters!");
+		animateHeading("Hit the Numbers!");
 		$("#start-button").on("click", onButtonClick);
 	}
 
@@ -27,7 +25,7 @@
 		round = 0;
 		score = 0;
 		lives = 5;
-		changedRound = false;
+		changedRound = false; //used to lower interval only once when new round begins
 		interval = 1100;
 		intervalId = null;
 		keysAllowed = [];
@@ -67,6 +65,16 @@
 		gameTitle = $("#title").detach();
 
 		startGame();
+
+		//starts key animtations, resets html text, and adds listeners to body
+		function startGame(){
+			$("body").on("keydown", onKeyPresses);
+			$("#round").text(round);
+			$("#score").text(score);
+			$("#lives").text(lives);
+
+			addRound();
+		}
 	}
 
 	//detects if keypress is equal to current key shown on screen, and ends game when lives run out
@@ -85,17 +93,6 @@
 		}
 	}
 
-	//starts key animtations, resets html text, and adds listeners to each hole
-	function startGame(){
-		$("body").on("keydown", onKeyPresses);
-		$("#round").text(round);
-		$("#score").text(score);
-		$("#lives").text(lives);
-
-		setKeyAnimation();
-		addRound();
-	}
-
 	//Add a new row each round, make interval have less time
 	function addRound(){
 		round++;
@@ -105,28 +102,29 @@
 		clearInterval(intervalId);
 		interval -= 100;
 		setKeyAnimation();
-	}
 
-	//before game begins, highlight random holes in gameboard
-	function setKeyAnimation(){
-		var random;
-		var effect = "puff";
+		//start showing the keys to press randomly in game area with some effect
+		function setKeyAnimation(){
+			var random;
+			var effect = "puff";
 
-		intervalId = setInterval(function(){
-			random = Math.floor(Math.random() * keysAllowed.length);
-			currentKey = keysAllowed[random];
+			intervalId = setInterval(function(){
+				random = Math.floor(Math.random() * keysAllowed.length);
+				currentKey = keysAllowed[random];
 
-			setRandomPosition();
+				setRandomPosition();
 
-			$(".letter-shown").show();
-			$(".letter-shown").text(random);
-			$(".letter-shown").effect(effect);
+				$(".shown").show();
+				$(".shown").text(random);
+				$(".shown").effect(effect);
 
-			if(score % 10 == 0 && score != 0 && !changedRound){
-				addRound();
-			}
+				//if we didn't check for changedRound, interval would keep lowering every ten points
+				if(score % 10 == 0 && score != 0 && !changedRound){
+					addRound();
+				}
 
-		}, interval);
+			}, interval);
+		}
 	}
 
 	//sets letter in a random position
@@ -134,12 +132,29 @@
 		var random;
 		var gameBoxHeight = $("#game-area").height();
 		var gameBoxWidth = $("#game-area").width();
+		var elementHeight = $(".shown").height();
+		var elementWidth = $(".shown").width();
 
-		random = Math.floor(Math.random() * gameBoxWidth);
-		$(".letter-shown").css("left", random);
+		random = getRandomPosition(elementWidth, gameBoxWidth);
+		setPosition(random, "left");
 
-		random = Math.floor(Math.random() * gameBoxHeight);
-		$(".letter-shown").css("top", random);
+		random = getRandomPosition(elementHeight, gameBoxHeight);
+		setPosition(random, "top");
+
+		//will set the position in game-area
+		function setPosition(random, moveFrom){
+			$(".shown").css(moveFrom, random);
+		}
+
+		//gets a randomNumber within a set width/height (depends on what is sent in)
+		function getRandomPosition(elementMeasurement, measuredDimension){
+			var random;
+
+			do{
+				random = Math.floor(Math.random() * measuredDimension - elementMeasurement);
+			} while(random < 0);
+			return random;
+		}
 	}
 
 	//stops key animations, announces that user is terrible
@@ -150,12 +165,12 @@
 		animateHeading("Game Over");
 
 		$("body").off();
-	}
 
-	//places start button back in position
-	function bringBackButton(){
-		$(startButton).appendTo(".container");
-		$(gameTitle).appendTo("#game-area");
+			//places start button back in position
+		function bringBackButton(){
+			$(startButton).appendTo(".container");
+			$(gameTitle).appendTo("#game-area");
+		}
 	}
 
 	onFirstRun();
