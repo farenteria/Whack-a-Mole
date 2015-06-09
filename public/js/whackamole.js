@@ -10,9 +10,11 @@
 	var gameTitle;
 	var interval;
 	var changedRound;
+	var highScore;
 
 	//Will only run when page is first loaded
 	function onFirstRun(){
+		highScore = 0;
 		initialize();
 		animateHeading("Hit the Numbers!");
 		$("#start-button").on("click", onButtonClick);
@@ -161,8 +163,17 @@
 	function endGame(){
 		clearInterval(intervalId);
 		bringBackButton();
+
+		if(highScore < score){
+			highScore = score;
+			$("#high-score").text(highScore);
+			animateHeading("New High Score: " + highScore + "!");
+		} else{
+			console.log(highScore + " " + score);
+			animateHeading("Game Over");
+		}
+
 		initialize();
-		animateHeading("Game Over");
 
 		$("body").off();
 
