@@ -15,6 +15,7 @@
 	var secondSet;
 	var thirdSet;
 	var fourthSet;
+	var pressed;
 
 	//Will only run when page is first loaded
 	function onFirstRun(){
@@ -118,7 +119,7 @@
 			endGame();
 		}
 
-		var keyPressed = event.which;
+		pressed = true;
 	}
 
 	//Add a color and size effect to round, make interval have less time
@@ -160,6 +161,14 @@
 				if(score % 10 == 0 && score != 0 && !changedRound){
 					addRound();
 				}
+
+				//if user hasn't pressed a key, that's going to cost a life
+				if(!pressed){
+					lives--;
+					$("#lives").text("Lives: " + lives);
+				}
+
+				pressed = false;
 
 			}, interval);
 		}
