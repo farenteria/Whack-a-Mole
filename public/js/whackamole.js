@@ -14,6 +14,7 @@
 
 	//Will only run when page is first loaded
 	function onFirstRun(){
+		//gets high score locally, if any. Otherwise, it's 0
 		highScore = localStorage.getItem("highScore");
 
 		if(!highScore){
@@ -102,10 +103,16 @@
 		}
 	}
 
-	//Add a new row each round, make interval have less time
+	//Add a color and size effect to round, make interval have less time
 	function addRound(){
 		round++;
-		$("#round").text("Round: " + round);
+		$("#round").text("Round: " + round).animate({
+			color: "##EDC53F",
+			fontSize: "20px"
+		}, 500).animate({
+			color: "#776E65",
+			fontSize: "16px"
+		}, 500);
 		changedRound = true;
 
 		clearInterval(intervalId);
@@ -123,9 +130,9 @@
 
 				setRandomPosition();
 
-				$(".shown").show();
-				$(".shown").text(random);
-				$(".shown").effect(effect);
+				$("#shown").show();
+				$("#shown").text(random);
+				$("#shown").effect(effect);
 
 				//if we didn't check for changedRound, interval would keep lowering every ten points
 				if(score % 10 == 0 && score != 0 && !changedRound){
@@ -141,8 +148,8 @@
 		var random;
 		var gameBoxHeight = $("#game-area").height();
 		var gameBoxWidth = $("#game-area").width();
-		var elementHeight = $(".shown").height();
-		var elementWidth = $(".shown").width();
+		var elementHeight = $("#shown").height();
+		var elementWidth = $("#shown").width();
 
 		random = getRandomPosition(elementWidth, gameBoxWidth);
 		setPosition(random, "left");
@@ -152,7 +159,7 @@
 
 		//will set the position in game-area
 		function setPosition(random, moveFrom){
-			$(".shown").css(moveFrom, random);
+			$("#shown").css(moveFrom, random);
 		}
 
 		//gets a randomNumber within a set width/height (depends on what is sent in)

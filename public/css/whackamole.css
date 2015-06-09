@@ -1,5 +1,7 @@
 body{
 	text-align: center;
+	background-color: #FAF8EF;
+	color: #776E65;
 }
 
 h1{
@@ -10,8 +12,9 @@ h1{
 	max-width: 800px;
 }
 
-.shown{
+#shown{
 	position: absolute;
+	color: #776E65;
 }
 
 #start-button{
@@ -26,5 +29,6 @@ h1{
 	border: 1px solid #e0e0e0;
 	position: relative;
 	margin-top: 50px;
+	background-color: #EEE4DA;
 }
 
