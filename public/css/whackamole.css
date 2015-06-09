@@ -1,6 +1,10 @@
 body{
 	text-align: center;
-	background-color: #FAF8EF;
+	background-color: #FFF3EA;
+	background-image: url("/img/baker_cat.jpg");
+	background-size: 1078px 606px;
+	background-repeat: no-repeat;
+	background-position: right 470px top 250px;
 	color: #776E65;
 }
 
