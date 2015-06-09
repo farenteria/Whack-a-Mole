@@ -19,8 +19,8 @@ h1{
 
 #start-button{
 	position: absolute;
-	top: 320px;
-	left: 575px;
+	top: 50%;
+	left: 359px;
 	border-radius: 25px;
 }
 

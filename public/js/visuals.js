@@ -70,8 +70,8 @@ function animateParagraph(color, element, value){
 
 //Gets saved button and title from references and displays them on page
 function bringBackElements(startButton, gameTitle){
-	$(startButton).appendTo(".container");
 	$(gameTitle).appendTo("#game-area");
+	$(startButton).appendTo("#game-area");
 }
 
 //Element passed in will be removed from page, and returned back for future reference
