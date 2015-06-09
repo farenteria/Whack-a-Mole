@@ -3,18 +3,25 @@
 	var round;
 	var score;
 	var lives;
+	var interval;
+	var highScore;
+	var gameTitle;
+	var currentKey;
 	var intervalId;
 	var startButton;
-	var currentKey;
 	var keysAllowed;
-	var gameTitle;
-	var interval;
 	var changedRound;
-	var highScore;
 
 	//Will only run when page is first loaded
 	function onFirstRun(){
-		highScore = 0;
+		highScore = localStorage.getItem("highScore");
+
+		if(!highScore){
+			highScore = 0;
+		}
+
+		$("#high-score").text("High Score: " + highScore);
+
 		initialize();
 		animateHeading("Hit the Numbers!");
 		$("#start-button").on("click", onButtonClick);
@@ -71,9 +78,9 @@
 		//starts key animtations, resets html text, and adds listeners to body
 		function startGame(){
 			$("body").on("keydown", onKeyPresses);
-			$("#round").text(round);
-			$("#score").text(score);
-			$("#lives").text(lives);
+			$("#round").text("Round: " + round);
+			$("#score").text("Score: " + score);
+			$("#lives").text("Lives: " + lives);
 
 			addRound();
 		}
@@ -83,11 +90,11 @@
 	function onKeyPresses(event){
 		if(event.which == currentKey){
 			score++;
-			$("#score").text(score);
+			$("#score").text("Score: " + score);
 			changedRound = false;
 		} else{
 			lives--;
-			$("#lives").text(lives);
+			$("#lives").text("Lives: " + lives);
 		}
 
 		if (lives < 0){
@@ -98,7 +105,7 @@
 	//Add a new row each round, make interval have less time
 	function addRound(){
 		round++;
-		$("#round").text(round);
+		$("#round").text("Round: " + round);
 		changedRound = true;
 
 		clearInterval(intervalId);
@@ -166,10 +173,10 @@
 
 		if(highScore < score){
 			highScore = score;
-			$("#high-score").text(highScore);
+			$("#high-score").text("High Score: " + highScore);
 			animateHeading("New High Score: " + highScore + "!");
+			localStorage.setItem("highScore", highScore);
 		} else{
-			console.log(highScore + " " + score);
 			animateHeading("Game Over");
 		}
 
@@ -177,7 +184,7 @@
 
 		$("body").off();
 
-			//places start button back in position
+		//places start button back in position
 		function bringBackButton(){
 			$(startButton).appendTo(".container");
 			$(gameTitle).appendTo("#game-area");
