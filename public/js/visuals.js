@@ -27,7 +27,7 @@ function updateRound(round){
 function updateKey(currentKey){
 	$("#shown").show();
 	$("#shown").text(String.fromCharCode(currentKey));
-	$("#shown").effect("puff");	
+	$("#shown").effect("puff", 800);	
 }
 
 //Will animate each letter in phrase that's passed in
@@ -49,7 +49,7 @@ function animateHeading(phrase){
 	    setTimeout(function() { 
 	    	that.animate({ fontSize: "90px" }, 1500 ) //this wouldn't work with $(this) for some reason
 	            .animate({ fontSize: "50px" }, 1500 );
-	    }, $(this).index() * 100);
+	    }, that.index() * 100);
   	});
 }
 

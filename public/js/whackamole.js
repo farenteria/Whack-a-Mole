@@ -57,7 +57,7 @@
 
 		 //used to lower interval only once when new round begins
 		changedRound = false;
-		interval = 1500;
+		interval = 1800;
 
 		keysAllowed = [];
 		setArrays();
