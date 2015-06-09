@@ -26,7 +26,7 @@
 			highScore = 0;
 		}
 
-		$("#high-score").text("High Score: " + highScore);
+		updateHighScore(highScore);
 
 		initialize();
 		animateHeading("Hit the Keys!");
@@ -48,9 +48,6 @@
 
 		function setArrays(){
 			//the numbers that user may press (0-9) in char code
-			// for(var i = startingPoint; i < startingPoint + totalKeys; i++){
-			// 	keysAllowed.push(i);
-			// }
 
 			//[1, ... 0] in order from left to right
 			firstSet = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48];
@@ -63,42 +60,18 @@
 		}
 	}
 
-	//animates each letter after the previous one for our game title
-	function animateHeading(phrase){
-		//save our text so we can clear it and append to blank element
-		var text = phrase;
-		$("#title").html("");
-
-		//add a span with class to animate each individual letter
-		for(var i = 0; i < text.length; i++) {
- 			 $("#title").append("<span class='animate'>" + text[i] + "</span>");
-		}
-
-		/* 	make each letter bigger, back to original size, with each letter having a longer delay
-			for an awesome animation */
-		$(".animate").each(function() {
-	        var that = $(this);
-
-	        setTimeout(function() { 
-	        	that.animate({ fontSize: "90px" }, 1500 ) //this wouldn't work with $(this) for some reason
-	                .animate({ fontSize: "50px" }, 1500 );
-	        }, $(this).index() * 100);
-  	  	});
-	}
-
 	//when start button is clicked, remove button
 	function onButtonClick(){
-		startButton = $("#start-button").detach();
-		gameTitle = $("#title").detach();
+		startButton = detachElement("#start-button");
+		gameTitle = detachElement("#title");
 
 		startGame();
 
 		//starts key animtations, resets html text, and adds listeners to body
 		function startGame(){
 			$("body").on("keydown", onKeyPresses);
-			$("#round").text("Round: " + round);
-			$("#score").text("Score: " + score);
-			$("#lives").text("Lives: " + lives);
+			updateScore(score);
+			updateLives(lives);
 
 			addRound();
 		}
@@ -108,11 +81,11 @@
 	function onKeyPresses(event){
 		if(event.which == currentKey){
 			score++;
-			$("#score").text("Score: " + score);
+			updateScore(score);
 			changedRound = false;
 		} else{
 			lives--;
-			$("#lives").text("Lives: " + lives);
+			updateLives(lives);
 		}
 
 		if (lives < 0){
@@ -125,37 +98,25 @@
 	//Add a color and size effect to round, make interval have less time
 	function addRound(){
 		round++;
-
-		$("#round").text("Round: " + round).animate({
-			color: "##EDC53F",
-			fontSize: "20px"
-		}, 500).animate({
-			color: "#776E65",
-			fontSize: "16px"
-		}, 500);
-
+		updateRound(round);
 		changedRound = true;
 
 		appendArrays();
 
 		clearInterval(intervalId);
 		interval -= 100;
-		setKeyAnimation();
+		setKey();
 
 		//start showing the keys to press randomly in game area with some effect
-		function setKeyAnimation(){
+		function setKey(){
 			var random;
-			var effect = "puff";
 
 			intervalId = setInterval(function(){
 				random = Math.floor(Math.random() * keysAllowed.length);
 				currentKey = keysAllowed[random];
 
 				setRandomPosition();
-
-				$("#shown").show();
-				$("#shown").text(String.fromCharCode(currentKey));
-				$("#shown").effect(effect);
+				showKey(currentKey);
 
 				//if we didn't check for changedRound, interval would keep lowering without stopping
 				if(score % 10 == 0 && score != 0 && !changedRound){
@@ -165,7 +126,11 @@
 				//if user hasn't pressed a key, that's going to cost a life
 				if(!pressed){
 					lives--;
-					$("#lives").text("Lives: " + lives);
+					updateLives(lives);
+
+					if(lives < 0){
+						endGame();
+					}
 				}
 
 				pressed = false;
@@ -194,42 +159,34 @@
 
 	//sets letter in a random position
 	function setRandomPosition(){
-		var random;
 		var gameBoxHeight = $("#game-area").height();
 		var gameBoxWidth = $("#game-area").width();
 		var elementHeight = $("#shown").height();
 		var elementWidth = $("#shown").width();
 
-		random = getRandomPosition(elementWidth, gameBoxWidth);
-		setPosition(random, "left");
-
-		random = getRandomPosition(elementHeight, gameBoxHeight);
-		setPosition(random, "top");
-
-		//will set the position in game-area
-		function setPosition(random, moveFrom){
-			$("#shown").css(moveFrom, random);
-		}
+		setRandomPosition(elementWidth, gameBoxWidth, "left");
+		setRandomPosition(elementHeight, gameBoxHeight, "top");
 
 		//gets a randomNumber within a set width/height (depends on what is sent in)
-		function getRandomPosition(elementMeasurement, measuredDimension){
+		function setRandomPosition(elementMeasurement, measuredDimension, moveFrom){
 			var random;
 
 			do{
 				random = Math.floor(Math.random() * measuredDimension - elementMeasurement);
 			} while(random < 0);
-			return random;
+
+			setPosition(random, moveFrom);
 		}
 	}
 
 	//stops key animations, announces that user is terrible
 	function endGame(){
 		clearInterval(intervalId);
-		bringBackButton();
+		bringBackButton(startButton, gameTitle);
 
 		if(highScore < score){
 			highScore = score;
-			$("#high-score").text("High Score: " + highScore);
+			updateHighScore(highScore);
 			animateHeading("New High Score: " + highScore + "!");
 			localStorage.setItem("highScore", highScore);
 		} else{
@@ -239,12 +196,6 @@
 		initialize();
 
 		$("body").off();
-
-		//places start button back in position
-		function bringBackButton(){
-			$(startButton).appendTo(".container");
-			$(gameTitle).appendTo("#game-area");
-		}
 	}
 
 	onFirstRun();
