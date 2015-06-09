@@ -11,6 +11,10 @@
 	var startButton;
 	var keysAllowed;
 	var changedRound;
+	var firstSet;
+	var secondSet;
+	var thirdSet;
+	var fourthSet;
 
 	//Will only run when page is first loaded
 	function onFirstRun(){
@@ -24,7 +28,7 @@
 		$("#high-score").text("High Score: " + highScore);
 
 		initialize();
-		animateHeading("Hit the Numbers!");
+		animateHeading("Hit the Keys!");
 		$("#start-button").on("click", onButtonClick);
 	}
 
@@ -39,10 +43,22 @@
 		interval = 1100;
 		intervalId = null;
 		keysAllowed = [];
+		setArrays();
 
-		//the numbers that user may press (0-9) in char code
-		for(var i = startingPoint; i < startingPoint + totalKeys; i++){
-			keysAllowed.push(i);
+		function setArrays(){
+			//the numbers that user may press (0-9) in char code
+			// for(var i = startingPoint; i < startingPoint + totalKeys; i++){
+			// 	keysAllowed.push(i);
+			// }
+
+			//[1, ... 0] in order from left to right
+			firstSet = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48];
+			//[Q, ... P] in order from left to right
+			secondSet = [81, 87, 69, 82, 84, 89, 85, 73, 79, 80];
+			//[A, ... L] in order from left to right
+			thirdSet = [65, 83, 68, 70, 71, 72, 74, 75, 76];
+			//[Z, ... M] in order from left to right
+			fourthSet = [90, 88, 67, 86, 66, 78, 77];
 		}
 	}
 
@@ -101,11 +117,14 @@
 		if (lives < 0){
 			endGame();
 		}
+
+		var keyPressed = event.which;
 	}
 
 	//Add a color and size effect to round, make interval have less time
 	function addRound(){
 		round++;
+
 		$("#round").text("Round: " + round).animate({
 			color: "##EDC53F",
 			fontSize: "20px"
@@ -113,7 +132,10 @@
 			color: "#776E65",
 			fontSize: "16px"
 		}, 500);
+
 		changedRound = true;
+
+		appendArrays();
 
 		clearInterval(intervalId);
 		interval -= 100;
@@ -131,15 +153,33 @@
 				setRandomPosition();
 
 				$("#shown").show();
-				$("#shown").text(random);
+				$("#shown").text(String.fromCharCode(currentKey));
 				$("#shown").effect(effect);
 
-				//if we didn't check for changedRound, interval would keep lowering every ten points
+				//if we didn't check for changedRound, interval would keep lowering without stopping
 				if(score % 10 == 0 && score != 0 && !changedRound){
 					addRound();
 				}
 
 			}, interval);
+		}
+
+		function appendArrays(){
+			switch (round){
+				case 1:
+					keysAllowed = keysAllowed.concat(firstSet);
+					break;
+				case 2:
+					keysAllowed = keysAllowed.concat(secondSet);
+					break;
+				case 3:
+					keysAllowed = keysAllowed.concat(thirdSet);
+					break;
+				case 4:
+					keysAllowed = keysAllowed.concat(fourthSet);
+					break;
+			}
+
 		}
 	}
 
