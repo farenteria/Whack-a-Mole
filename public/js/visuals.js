@@ -30,6 +30,16 @@ function updateKey(currentKey){
 	$("#shown").effect("puff", 800);	
 }
 
+//show how proud Baker Cat is of us for getting a high score
+function showProud(){
+	$("#proud-container").css("visibility", "visible");
+}
+
+//Baker Cat will be sad that you didn't get a high score
+function showSad(){
+	$("#sad-container").css("visibility", "visible");
+}
+
 //Will animate each letter in phrase that's passed in
 function animateHeading(phrase){
 	//save our text so we can clear it and append to blank element
@@ -82,4 +92,9 @@ function detachElement(element){
 //sets current key on screen in position
 function setPosition(random, moveFrom){
 	$("#shown").css(moveFrom, random);
+}
+
+//Baker Cat will be quiet as he goes back to baking
+function removeBakerSayings(){
+	$(".kitten-container").css("visibility", "hidden");
 }

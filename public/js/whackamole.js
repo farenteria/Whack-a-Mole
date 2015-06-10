@@ -84,6 +84,9 @@
 		startButton = detachElement("#start-button");
 		gameTitle = detachElement("#title");
 
+		//Quiets the kittty. Refer to visuals.js
+		removeBakerSayings();
+
 		startGame();
 
 		//starts key animtations, resets html text, and adds listeners to body
@@ -226,15 +229,23 @@
 		if(highScore < score){
 			highScore = score;
 
-			//new high score is displayd. Refer to visuals. js
+			//new high score is displayd. Refer to visuals.js
 			updateHighScore(highScore);
 
+			//refer to visuals.js
 			animateHeading("New High Score: " + highScore + "!");
+
+			//show proud kitten being prideful. Refer to visuals.js
+			showProud();
 
 			//saves new high score to local storage
 			localStorage.setItem("highScore", highScore);
 		} else{
+			//refer to visuals.js
 			animateHeading("Game Over");
+
+			//sad kitty will be sad. Refer to visuals.js
+			showSad();
 		}
 
 		//reset variables to be ready for next game

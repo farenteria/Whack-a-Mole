@@ -16,9 +16,27 @@ h1{
 	max-width: 800px;
 }
 
+.line{
+	position: absolute;
+	height: 40px;
+	width: 0;
+	bottom: 345px;
+}
+
+.kitten-container{
+	visibility: hidden;
+}
+
+.yellow-background{
+	background-color: #FEEFC4;
+}
+
+.brown-border{
+	border: 1px solid #E3C392;	
+}
+
 #shown{
 	position: absolute;
-	color: #776E65;
 }
 
 #start-button{
@@ -29,10 +47,33 @@ h1{
 }
 
 #game-area{
-	height: 300px;
-	border: 1px solid #E3C392;
 	position: relative;
+	height: 300px;
 	margin-top: 50px;
-	background-color: #FEEFC4;
 }
 
+#proud-box{
+	position: absolute;
+	height: 90px;
+	width: 140px;
+	left: 40px;
+	bottom: 400px;
+	font-size: 2em;
+}
+
+#line-1{
+	left: 100px;
+}
+
+#sad-box{
+	position: absolute;
+	height: 50px;
+	width: 140px;
+	right: 40px;
+	bottom: 400px;
+	font-size: 2em;
+}
+
+#line-2{
+	right: 110px;
+}
