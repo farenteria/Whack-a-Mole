@@ -112,7 +112,7 @@
 			changedRound = false;
 
 			//if we didn't check for changedRound, interval would keep lowering without stopping
-			if(score % 10 == 0 && score != 0 && !changedRound){
+			if(score % 10 == 0 && !changedRound){
 				addRound();
 			}
 		} else{
