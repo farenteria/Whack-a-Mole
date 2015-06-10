@@ -55,6 +55,9 @@
 		score = 0;
 		lives = 5;
 
+		//this will be initialized to true to skip check on first round
+		pressed = true;
+
 		 //used to lower interval only once when new round begins
 		changedRound = false;
 		interval = 1800;
@@ -148,6 +151,7 @@
 				updateKey(currentKey);
 
 				//if user hasn't pressed a key, that's going to cost a life
+				//can sometimes run too quickly, and subtract by accident on first run
 				if(!pressed){
 					subtractLife();
 
