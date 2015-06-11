@@ -62,14 +62,14 @@
 		keysAllowed = [];
 
 		//arrays are saved by charCode and by how they are displayed on keyboard
-		//[1, ... 0] in order from left to right
-		firstSet = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48];
+		//[A, ... L] in order from left to right
+		firstSet = [65, 83, 68, 70, 71, 72, 74, 75, 76];
 		//[Q, ... P] in order from left to right
 		secondSet = [81, 87, 69, 82, 84, 89, 85, 73, 79, 80];
-		//[A, ... L] in order from left to right
-		thirdSet = [65, 83, 68, 70, 71, 72, 74, 75, 76];
 		//[Z, ... M] in order from left to right
-		fourthSet = [90, 88, 67, 86, 66, 78, 77];
+		thirdSet = [90, 88, 67, 86, 66, 78, 77];
+		//[1, ... 0] in order from left to right
+		fourthSet = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48];
 	}
 
 	//when start button is clicked, remove button
