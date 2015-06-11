@@ -8,7 +8,6 @@
 	var score;
 	var lives;
 	var highScore;
-	var changedRound;
 
 	//concerned with interval
 	var interval;
@@ -58,24 +57,19 @@
 		//this will be initialized to true to skip check on first round
 		pressed = true;
 
-		 //used to lower interval only once when new round begins
-		changedRound = false;
 		interval = 1800;
 
 		keysAllowed = [];
-		setArrays();
 
 		//arrays are saved by charCode and by how they are displayed on keyboard
-		function setArrays(){
-			//[1, ... 0] in order from left to right
-			firstSet = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48];
-			//[Q, ... P] in order from left to right
-			secondSet = [81, 87, 69, 82, 84, 89, 85, 73, 79, 80];
-			//[A, ... L] in order from left to right
-			thirdSet = [65, 83, 68, 70, 71, 72, 74, 75, 76];
-			//[Z, ... M] in order from left to right
-			fourthSet = [90, 88, 67, 86, 66, 78, 77];
-		}
+		//[1, ... 0] in order from left to right
+		firstSet = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48];
+		//[Q, ... P] in order from left to right
+		secondSet = [81, 87, 69, 82, 84, 89, 85, 73, 79, 80];
+		//[A, ... L] in order from left to right
+		thirdSet = [65, 83, 68, 70, 71, 72, 74, 75, 76];
+		//[Z, ... M] in order from left to right
+		fourthSet = [90, 88, 67, 86, 66, 78, 77];
 	}
 
 	//when start button is clicked, remove button
@@ -87,19 +81,14 @@
 		//Quiets the kittty. Refer to visuals.js
 		removeBakerSayings();
 
-		startGame();
+		//we're only detecting keypresses when game is started 
+		$("body").on("keydown", onKeyPresses);
 
-		//starts key animtations, resets html text, and adds listeners to body
-		function startGame(){
-			//we're only detecting keypresses when game is started 
-			$("body").on("keydown", onKeyPresses);
+		//score and lives will be displayed. Refer to visuals.js
+		updateScore(score);
+		updateLives(lives);
 
-			//score and lives will be displayed. Refer to visuals.js
-			updateScore(score);
-			updateLives(lives);
-
-			addRound();
-		}
+		addRound();
 	}
 
 	//detects if keypress is equal to current key shown on screen, and ends game when lives run out
@@ -109,10 +98,9 @@
 
 			//displays new, current score. Refer to visuals.js
 			updateScore(score);
-			changedRound = false;
 
-			//if we didn't check for changedRound, interval would keep lowering without stopping
-			if(score % 10 == 0 && !changedRound){
+			//every ten points, we begin a new round
+			if(score % 10 == 0){
 				addRound();
 			}
 		} else{
@@ -132,63 +120,55 @@
 
 		//Displays new round. //Refer to visuals.js
 		updateRound(round);
-		changedRound = true;
 
-		appendArrays();
+		//each new round (until fifth round), concatenate another set of keys
+		switch (round){
+			case 1:
+				keysAllowed = keysAllowed.concat(firstSet);
+				break;
+			case 2:
+				keysAllowed = keysAllowed.concat(secondSet);
+				break;
+			case 3:
+				keysAllowed = keysAllowed.concat(thirdSet);
+				break;
+			case 4:
+				keysAllowed = keysAllowed.concat(fourthSet);
+				break;
+		}
 
 		clearInterval(intervalId);
 		interval -= 100;
-		setKey();
 
 		//start showing the keys to press randomly in game area with some effect
-		function setKey(){
-			var random;
+		var random;
 
-			intervalId = setInterval(function(){
-				random = Math.floor(Math.random() * keysAllowed.length);
-				currentKey = keysAllowed[random];
+		intervalId = setInterval(function(){
+			random = Math.floor(Math.random() * keysAllowed.length);
+			currentKey = keysAllowed[random];
 
-				setRandomPosition();
+			setDimensions();
 
-				//shows current key that must be pressed. Refer to visuals.js
-				updateKey(currentKey);
+			//shows current key that must be pressed. Refer to visuals.js
+			updateKey(currentKey);
 
-				//if user hasn't pressed a key, that's going to cost a life
-				//can sometimes run too quickly, and subtract by accident on first run
-				if(!pressed){
-					subtractLife();
+			//if user hasn't pressed a key, that's going to cost a life
+			//can sometimes run too quickly, and subtract by accident on first run
+			if(!pressed){
+				subtractLife();
 
-					if(lives < 0){
-						endGame();
-					}
+				if(lives < 0){
+					endGame();
 				}
-
-				pressed = false;
-
-			}, interval);
-		}
-
-		//each new round (until fifth round), concatenate another set of keys
-		function appendArrays(){
-			switch (round){
-				case 1:
-					keysAllowed = keysAllowed.concat(firstSet);
-					break;
-				case 2:
-					keysAllowed = keysAllowed.concat(secondSet);
-					break;
-				case 3:
-					keysAllowed = keysAllowed.concat(thirdSet);
-					break;
-				case 4:
-					keysAllowed = keysAllowed.concat(fourthSet);
-					break;
 			}
-		}
+
+			pressed = false;
+
+		}, interval);
 	}
 
 	//sets letter in a random position
-	function setRandomPosition(){
+	function setDimensions(){
 		var gameBoxHeight = $("#game-area").height();
 		var gameBoxWidth = $("#game-area").width();
 		var elementHeight = $("#shown").height();
@@ -196,18 +176,18 @@
 
 		setRandomPosition(elementWidth, gameBoxWidth, "left");
 		setRandomPosition(elementHeight, gameBoxHeight, "top");
+	}
 
-		//sets the position of key shown in one direction as specified
-		function setRandomPosition(elementMeasurement, measuredDimension, moveFrom){
-			var random;
+	//sets the position of key shown in one direction as specified
+	function setRandomPosition(elementMeasurement, measuredDimension, moveFrom){
+		var random;
 
-			do{
-				random = Math.floor(Math.random() * measuredDimension - elementMeasurement);
-			} while(random < 0);
+		do{
+			random = Math.floor(Math.random() * measuredDimension - elementMeasurement);
+		} while(random < 0);
 
-			//will show the key in position. Refer to visuals.js
-			setPosition(random, moveFrom);
-		}
+		//will show the key in position. Refer to visuals.js
+		setPosition(random, moveFrom);
 	}
 
 	//subtracts a life from player, and displays it on screen.
